@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+const strapiUrl = `${process.env.REACT_APP_STRAPI_URL}`;
 
 const useAsyncRequest = (amount, method) => {
   const [data, setData] = useState(null);
@@ -9,8 +10,7 @@ const useAsyncRequest = (amount, method) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://btccpr-strapi.herokuapp.com/dictionaries?_limit=${amount}`
-
+          `${strapiUrl}?_limit=${amount}`
         );
         const json = await response.json();
         setData(json, setLoading(false));
@@ -27,7 +27,7 @@ const useAsyncRequest = (amount, method) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: 'React Hooks POST Request Example' })
       };
-      fetch(`https://btccpr-strapi.herokuapp.com/dictionaries`, requestOptions)
+      fetch(`${strapiUrl}`, requestOptions)
         .then(response => response.json());
       //.then(data => setPostId(data.id));
     };
