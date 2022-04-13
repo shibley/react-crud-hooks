@@ -1,89 +1,90 @@
 import React, { useState, useEffect } from "react";
-import userList from "./data.js";
-import UserTable from "./tables/UserTable";
-import AddUserForm from "./forms/AddUserForm";
-import EditUserForm from "./forms/EditUserForm";
+//import userList from "./data.js";
+import ItemTable from "./tables/ItemTable";
+import AddDefinitionForm from "./forms/AddDefinitionForm";
+import EditDefinitionForm from "./forms/EditDefinitionForm";
 
 import { useAsyncRequest } from "./hooks";
 
 const App = () => {
-  const [data, loading] = useAsyncRequest(3);
+  const [data, loading] = useAsyncRequest(20);
   // Fixed array of users:
   // const [users, setUsers] = userList;
-  const [users, setUsers] = useState(null);
+  const [items, setData] = useState(null);
 
   useEffect(() => {
     if (data) {
-      const formattedUsers = data.map((obj, i) => {
+      const formattedData = data.map((obj, i) => {
         return {
           id: i,
-          name: obj.name.first,
-          username: obj.name.first + " " + obj.name.last,
+          name: obj.Name,
+          definition: obj.Definition
         };
       });
-      setUsers(formattedUsers);
+      setData(formattedData);
     }
   }, [data]);
 
-  const addUser = (user) => {
-    user.id = users.length;
-    setUsers([...users, user]);
+  const addItem = (item) => {
+    item.id = items.length;
+    setData([...items, item]);
   };
 
-  const deleteUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+  const deleteItem = (id) => {
+    setData(items.filter((item) => item.id !== id));
   };
 
   const [editing, setEditing] = useState(false);
 
-  const initialUser = { id: null, name: "", username: "" };
+  const initialItem = { id: null, name: "", definition: "" };
 
-  const [currentUser, setCurrentUser] = useState(initialUser);
+  const [currentItem, setCurrentItem] = useState(initialItem);
 
-  const editUser = (id, user) => {
+  const editDefinition = (id, item) => {
+    //alert(item.name)
     setEditing(true);
-    setCurrentUser(user);
+    setCurrentItem(item);
   };
 
-  const updateUser = (newUser) => {
-    setUsers(
-      users.map((user) => (user.id === currentUser.id ? newUser : user))
+  const updateDefinition = (newDefinition) => {
+    setData(
+      items.map((item) => (item.id === currentItem.id ? newDefinition : item))
     );
-    setCurrentUser(initialUser);
+    setCurrentItem(initialItem);
     setEditing(false);
   };
 
   return (
     <div className="container">
-      <h1>React CRUD App with Hooks</h1>
+      <h1>Dictionary Admin</h1>
       <div className="row">
         <div className="five columns">
           {editing ? (
             <div>
-              <h2>Edit user</h2>
-              <EditUserForm
-                currentUser={currentUser}
+              <h2>Edit</h2>
+              <EditDefinitionForm
+                currentItem={currentItem}
                 setEditing={setEditing}
-                updateUser={updateUser}
+                updateDefinition={updateDefinition}
               />
             </div>
           ) : (
             <div>
-              <h2>Add user</h2>
-              <AddUserForm addUser={addUser} />
+              <h2>Add definition</h2>
+              <AddDefinitionForm addDefinition={addItem} />
             </div>
           )}
         </div>
-        {loading || !users ? (
+        {loading || !items ? (
           <p>Loading...</p>
         ) : (
           <div className="seven columns">
-            <h2>View users</h2>
+            <h2>View definitions</h2>
 
-            <UserTable
-              users={users}
-              deleteUser={deleteUser}
-              editUser={editUser}
+            <ItemTable
+              items={items}
+              deleteItem={deleteItem}
+              editDefinition={editDefinition}
             />
           </div>
         )}

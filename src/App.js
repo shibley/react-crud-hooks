@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import userList from "./data.js";
-import UserTable from "./tables/UserTable";
-import AddUserForm from "./forms/AddUserForm";
-import EditUserForm from "./forms/EditUserForm";
+import ItemTable from "./tables/ItemTable";
+import AddDefinitionForm from "./forms/AddDefinitionForm";
+import EditDefinitionForm from "./forms/EditDefinitionForm";
 
 const App = () => {
   const [users, setUsers] = useState(userList);
@@ -12,7 +12,7 @@ const App = () => {
     setUsers([...users, user]);
   };
 
-  const deleteUser = (id) => {
+  const deleteItem = (id) => {
     setUsers(users.filter((user) => user.id !== id));
   };
 
@@ -37,13 +37,13 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>React CRUD App with Hooks</h1>
+      <h1>BTCCPR Dictionary Admin</h1>
       <div className="row">
         <div className="five columns">
           {editing ? (
             <div>
               <h2>Edit user</h2>
-              <EditUserForm
+              <EditDefinitionForm
                 currentUser={currentUser}
                 setEditing={setEditing}
                 updateUser={updateUser}
@@ -51,16 +51,16 @@ const App = () => {
             </div>
           ) : (
             <div>
-              <h2>Add user</h2>
-              <AddUserForm addUser={addUser} />
+              <h2>Add Definition</h2>
+              <AddDefinitionForm addUser={addUser} />
             </div>
           )}
         </div>
         <div className="seven columns">
-          <h2>View users</h2>
-          <UserTable
+          <h2>View Dictionary Definitions</h2>
+          <ItemTable
             users={users}
-            deleteUser={deleteUser}
+            deleteItem={deleteItem}
             editUser={editUser}
           />
         </div>
