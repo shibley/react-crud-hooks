@@ -9,13 +9,13 @@ const EditdefinitionForm = (props) => {
     const [item, setdefinition] = useState(props.currentItem);
 
     const handleChange = e => {
-        const { Name, value } = e.target;
-        setdefinition({ ...item, [Name]: value });
+        const { name, value } = e.target;
+        setdefinition({ ...item, [name]: value });
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (item.name && item.definition) props.updatedefinition(item);
+        if (item.name && item.definition) props.updateDefinition(item);
     }
 
     return (
